@@ -4,13 +4,22 @@
   "version": "0.0.1",
   "description": "A browser extension for storing and retrieving user prompts",
   "author": "Steven Kotwal <stevenkotwal@ufl.edu>",
+  "contributors": [
+    {
+      "name": "Jonathan Groberg",
+      "email": "jonathan.groberg@ufl.edu"
+    },
+    {
+      "name": "Ife Adeyefa",
+      "email": "iadeyefa@ufl.edu"
+    }
+  ],
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
     "package": "plasmo package"
   },
   "dependencies": {
-    "plasmo": "0.90.3",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
@@ -20,6 +29,7 @@
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
+    "plasmo": "^0.90.3",
     "prettier": "3.2.4",
     "typescript": "5.3.3"
   },
