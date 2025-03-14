@@ -3,7 +3,13 @@
   "displayName": "Prompt manager",
   "version": "0.0.1",
   "description": "A browser extension for storing and retrieving user prompts",
-  "author": "Steven Kotwal <stevenkotwal@ufl.edu>, Ife Adeyefa <iadeyefa@ufl.edu>",
+  "author": "Steven Kotwal <stevenkotwal@ufl.edu>",
+   "contributors": [
+     {
+        "name": "Ife Adeyefa",
+        "email": "iadeyefa@ufl.edu"
+     }
+   ],
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
