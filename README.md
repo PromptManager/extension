@@ -3,6 +3,18 @@ PromptManager is a web browser extension that allows you to manage your prompts.
 
 > Extension code is found in `prompt-manager`
 
+## Branching Strategy
+
+- **Main Branch**
+  - Deploys to main
+- **Dev Branch**
+  - Deploys to dev 
+  - Merged into main by pull request after **testing**
+- **Other Branches**
+  - Named in this format [issue#]-[description of feature]
+  - Merged into dev by pull request
+  
+
 ## Folders
 
 - `prompt-manager`: Contains the main code for the extension.
