@@ -5,7 +5,6 @@ function IndexPopup() {
   const [savedData, setSavedData] = useState<string[]>([])
   const [currentUrl, setCurrentUrl] = useState<string>("")
 
-
   const getCurrentUrl = async () => {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
     const tab = tabs[0]
