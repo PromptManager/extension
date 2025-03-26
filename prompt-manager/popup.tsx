@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import PromptList from "~components/PromptList"
-import React from "~node_modules/@types/react"
 import type { Prompt } from "~types/Prompt"
 
 const mockPromptListData: Prompt[] = [{
@@ -41,7 +40,7 @@ function IndexPopup() {
   })
 
   return (
-    <div style={{ padding: 16, fontFamily: "Arial, sans-serif" }}>
+    <div style={{ padding: 16, fontFamily: "Arial, sans-serif", minWidth:"400px"}}>
       <h2 style={{ textAlign: "center", color: "#333" }}>Prompt Manager</h2>
 
       <div style={{ marginBottom: 16 }}>
