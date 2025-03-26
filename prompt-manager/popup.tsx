@@ -1,8 +1,17 @@
-import { useState, useEffect} from "react"
+import { useState, useEffect } from "react"
+import PromptList from "~components/PromptList"
+import type { Prompt } from "~types/Prompt"
+
+const mockPromptListData: Prompt[] = [{
+  title: "Sample Prompt",
+  prompt: "This is a sample prompt description.",
+  tags: ["Test Tag"]
+}]
+
 
 function IndexPopup() {
-  const [data, setData] = useState("")
-  const [savedData, setSavedData] = useState<string[]>([])
+  const [userInput, setUserInput] = useState("")
+  const [savedData, setSavedData] = useState<Prompt[]>(mockPromptListData)
   const [currentUrl, setCurrentUrl] = useState<string>("")
   const [searchQuery, setSearchQuery] = useState<string>("")
 
@@ -17,14 +26,18 @@ function IndexPopup() {
   }, [])
 
   const savePrompt = () => {
-    if (data.trim() !== "") {
-      setSavedData([...savedData, data])
-      setData("")
+    if (userInput.trim() !== "") {
+      const newPrompt: Prompt = { title: "", tags: [], prompt: userInput }
+
+      setSavedData([...savedData, newPrompt])
+      setUserInput("")
     }
   }
 
-  const searchedPrompts = savedData.filter((prompt: string) => {
-    return prompt.toLowerCase().includes(searchQuery.toLowerCase())
+  const searchedPrompts: Prompt[] = savedData.filter((prompt) => {
+    return prompt.title.toLowerCase().includes(searchQuery.toLowerCase())
+      || prompt.title.toLowerCase().includes(searchQuery.toLowerCase())
+      || prompt.tags.find(tag => tag.includes(searchQuery))
   })
 
   return (
@@ -35,34 +48,25 @@ function IndexPopup() {
       <h2>Prompt Manager</h2>
 
       <input
-        type = "text"
-        value = {data}
-        onChange = {(e) => setData(e.target.value)}
-        placeholder = "Enter Prompt"
+        type="text"
+        value={userInput}
+        onChange={(e) => setUserInput(e.target.value)}
+        placeholder="Enter Prompt"
       />
-      <button onClick = {savePrompt} style = {{width: "100%", padding: 8}}>
+      <button onClick={savePrompt} style={{ width: "100%", padding: 8 }}>
         Save Prompt
       </button>
 
       <h2>Search Prompts</h2>
       <input
-        type = "text"
-        value = {searchQuery}
-        onChange = {(e) => setSearchQuery(e.target.value)}
-        placeholder = "Search Saved Prompt"
+        type="text"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Search Saved Prompt"
       />
 
       <h2>Saved Prompts</h2>
-      <ul>
-        {searchedPrompts.map((prompt, index) => (
-          <li key = {index}>{prompt}</li>
-        ))}
-      </ul>
-
-      <p>
-        You are currently on:
-        {currentUrl}
-      </p>
+      <PromptList promptListData={searchedPrompts} />
     </div>
   )
 }
