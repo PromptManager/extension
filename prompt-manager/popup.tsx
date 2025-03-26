@@ -4,6 +4,7 @@ function IndexPopup() {
   const [data, setData] = useState("")
   const [savedData, setSavedData] = useState<string[]>([])
   const [currentUrl, setCurrentUrl] = useState<string>("")
+  const [searchQuery, setSearchQuery] = useState<string>("")
 
   const getCurrentUrl = async () => {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
@@ -22,6 +23,10 @@ function IndexPopup() {
     }
   }
 
+  const searchedPrompts = savedData.filter((prompt: string) => {
+    return prompt.toLowerCase().includes(searchQuery.toLowerCase())
+  })
+
   return (
     <div
       style={{
@@ -39,9 +44,17 @@ function IndexPopup() {
         Save Prompt
       </button>
 
+      <h2>Search Prompts</h2>
+      <input
+        type = "text"
+        value = {searchQuery}
+        onChange = {(e) => setSearchQuery(e.target.value)}
+        placeholder = "Search Saved Prompt"
+      />
+
       <h2>Saved Prompts</h2>
       <ul>
-        {savedData.map((prompt, index) => (
+        {searchedPrompts.map((prompt, index) => (
           <li key = {index}>{prompt}</li>
         ))}
       </ul>
