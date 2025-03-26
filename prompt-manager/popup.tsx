@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import PromptList from "~components/PromptList"
+import React from "~node_modules/@types/react"
 import type { Prompt } from "~types/Prompt"
 
 const mockPromptListData: Prompt[] = [{
@@ -7,7 +8,6 @@ const mockPromptListData: Prompt[] = [{
   prompt: "This is a sample prompt description.",
   tags: ["Test Tag"]
 }]
-
 
 function IndexPopup() {
   const [userInput, setUserInput] = useState("")
@@ -34,39 +34,66 @@ function IndexPopup() {
     }
   }
 
-  const searchedPrompts: Prompt[] = savedData.filter((prompt) => {
-    return prompt.title.toLowerCase().includes(searchQuery.toLowerCase())
-      || prompt.title.toLowerCase().includes(searchQuery.toLowerCase())
-      || prompt.tags.find(tag => tag.includes(searchQuery))
+  const searchedPrompts: Prompt[] = savedData.filter((promptData) => {
+    return promptData.title.toLowerCase().includes(searchQuery.toLowerCase())
+      || promptData.prompt.toLowerCase().includes(searchQuery.toLowerCase())
+      || promptData.tags.find(tag => tag.includes(searchQuery))
   })
 
   return (
-    <div
-      style={{
-        padding: 16
-      }}>
-      <h2>Prompt Manager</h2>
+    <div style={{ padding: 16, fontFamily: "Arial, sans-serif" }}>
+      <h2 style={{ textAlign: "center", color: "#333" }}>Prompt Manager</h2>
 
-      <input
-        type="text"
-        value={userInput}
-        onChange={(e) => setUserInput(e.target.value)}
-        placeholder="Enter Prompt"
-      />
-      <button onClick={savePrompt} style={{ width: "100%", padding: 8 }}>
-        Save Prompt
-      </button>
+      <div style={{ marginBottom: 16 }}>
+        <input
+          type="text"
+          value={userInput}
+          onChange={(e) => setUserInput(e.target.value)}
+          placeholder="Enter Prompt"
+          style={{
+            width: "100%",
+            padding: 8,
+            marginBottom: 8,
+            borderRadius: 4,
+            border: "1px solid #ccc"
+          }}
+        />
+        <button
+          onClick={savePrompt}
+          style={{
+            width: "100%",
+            padding: 8,
+            backgroundColor: "#007bff",
+            color: "#fff",
+            border: "none",
+            borderRadius: 4,
+            cursor: "pointer"
+          }}
+        >
+          Save Prompt
+        </button>
+      </div>
 
-      <h2>Search Prompts</h2>
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search Saved Prompt"
-      />
+      <div style={{ marginBottom: 16 }}>
+        <h2 style={{ color: "#333" }}>Search Prompts</h2>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search Saved Prompt"
+          style={{
+            width: "100%",
+            padding: 8,
+            borderRadius: 4,
+            border: "1px solid #ccc"
+          }}
+        />
+      </div>
 
-      <h2>Saved Prompts</h2>
-      <PromptList promptListData={searchedPrompts} />
+      <div>
+        <h2 style={{ color: "#333" }}>Saved Prompts</h2>
+        <PromptList promptListData={searchedPrompts} />
+      </div>
     </div>
   )
 }
