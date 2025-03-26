@@ -1,10 +1,18 @@
-import { useState, useEffect} from "react"
+import React, { useState, useEffect } from "react"
+import PromptList from "~components/PromptList"
+import type { Prompt } from "~types/Prompt"
+
+const mockPromptListData: Prompt[] = [{
+  title: "Sample Prompt",
+  prompt: "This is a sample prompt description.",
+  tags: ["Test Tag"]
+}]
 
 function IndexPopup() {
-  const [data, setData] = useState("")
-  const [savedData, setSavedData] = useState<string[]>([])
+  const [userInput, setUserInput] = useState("")
+  const [savedData, setSavedData] = useState<Prompt[]>(mockPromptListData)
   const [currentUrl, setCurrentUrl] = useState<string>("")
-
+  const [searchQuery, setSearchQuery] = useState<string>("")
 
   const getCurrentUrl = async () => {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
@@ -17,40 +25,74 @@ function IndexPopup() {
   }, [])
 
   const savePrompt = () => {
-    if (data.trim() !== "") {
-      setSavedData([...savedData, data])
-      setData("")
+    if (userInput.trim() !== "") {
+      const newPrompt: Prompt = { title: "", tags: [], prompt: userInput }
+
+      setSavedData([...savedData, newPrompt])
+      setUserInput("")
     }
   }
 
+  const searchedPrompts: Prompt[] = savedData.filter((promptData) => {
+    return promptData.title.toLowerCase().includes(searchQuery.toLowerCase())
+      || promptData.prompt.toLowerCase().includes(searchQuery.toLowerCase())
+      || promptData.tags.find(tag => tag.includes(searchQuery))
+  })
+
   return (
-    <div
-      style={{
-        padding: 16
-      }}>
-      <h2>Prompt Manager</h2>
+    <div style={{ padding: 16, fontFamily: "Arial, sans-serif", minWidth:"400px"}}>
+      <h2 style={{ textAlign: "center", color: "#333" }}>Prompt Manager</h2>
 
-      <input
-        type = "text"
-        value = {data}
-        onChange = {(e) => setData(e.target.value)}
-        placeholder = "Enter Prompt"
-      />
-      <button onClick = {savePrompt} style = {{width: "100%", padding: 8}}>
-        Save Prompt
-      </button>
+      <div style={{ marginBottom: 16 }}>
+        <input
+          type="text"
+          value={userInput}
+          onChange={(e) => setUserInput(e.target.value)}
+          placeholder="Enter Prompt"
+          style={{
+            width: "100%",
+            padding: 8,
+            marginBottom: 8,
+            borderRadius: 4,
+            border: "1px solid #ccc"
+          }}
+        />
+        <button
+          onClick={savePrompt}
+          style={{
+            width: "100%",
+            padding: 8,
+            backgroundColor: "#007bff",
+            color: "#fff",
+            border: "none",
+            borderRadius: 4,
+            cursor: "pointer"
+          }}
+        >
+          Save Prompt
+        </button>
+      </div>
 
-      <h2>Saved Prompts</h2>
-      <ul>
-        {savedData.map((prompt, index) => (
-          <li key = {index}>{prompt}</li>
-        ))}
-      </ul>
+      <div style={{ marginBottom: 16 }}>
+        <h2 style={{ color: "#333" }}>Search Prompts</h2>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search Saved Prompt"
+          style={{
+            width: "100%",
+            padding: 8,
+            borderRadius: 4,
+            border: "1px solid #ccc"
+          }}
+        />
+      </div>
 
-      <p>
-        You are currently on:
-        {currentUrl}
-      </p>
+      <div>
+        <h2 style={{ color: "#333" }}>Saved Prompts</h2>
+        <PromptList promptListData={searchedPrompts} />
+      </div>
     </div>
   )
 }
