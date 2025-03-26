@@ -3,6 +3,6 @@ export default function PromptListItem({ promptData }: { promptData: Prompt }) {
     return <li>
         <div>{promptData.title}</div>
         <div>{promptData.prompt}</div>
-        <div>{promptData.tags}</div>
+        <div>{promptData.tags.join(', ')}</div>
     </li>
 }
