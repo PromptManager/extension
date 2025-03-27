@@ -10,13 +10,15 @@ PromptManager is a web browser extension that allows you to manage your prompts.
 - **Dev Branch**
   - Deploys to dev 
   - Merged into main by pull request after **testing**
-- **Other Branches**
+- **Feature Branches**
   - Named in this format [issue#]-[description of feature]
   - Merged into dev by pull request
+  - Then delete feature branch after merge
   
 
 ## Folders
 
 - `prompt-manager`: Contains the main code for the extension.
-- `pipeline`: Contains CICD workflow.
-- TODO....
+- `website`: Contains code for the public website (including privacy policy for chrome store)
+- `.github/workflows`: Contains CICD workflow.
+
