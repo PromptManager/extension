@@ -1,5 +1,5 @@
 import { storage } from '@plasmohq/storage'
-import type { Prompt } from '../types/Prompt'
+import type { Prompt } from '../interface/Prompt'
 
 const STORAGE_KEY = "promptList";
 

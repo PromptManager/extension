@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import PromptList from "~components/PromptList"
-import type { Prompt } from "~types/Prompt"
+import type { Prompt } from "~interface/Prompt"
 import { getPrompts, addPrompt } from "~storage/storage"
 
 const mockPromptListData: Prompt[] = [{
