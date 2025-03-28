@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import PromptList from "~components/PromptList"
 import type { Prompt } from "~types/Prompt"
+import { getPrompts, addPrompt } from "~storage/storage"
 
 const mockPromptListData: Prompt[] = [{
   title: "Sample Prompt",
@@ -22,13 +23,22 @@ function IndexPopup() {
 
   useEffect(() => {
     getCurrentUrl()
+    async function loadPrompts() {
+      // Try to load stored prompts; if empty, fallback to mock data
+      const storedPrompts = await getPrompts()
+      if (storedPrompts.length > 0) {
+        setSavedData(storedPrompts)
+      }
+    }
+    loadPrompts()
   }, [])
 
-  const savePrompt = () => {
+  const savePrompt = async () => {
     if (userInput.trim() !== "") {
       const newPrompt: Prompt = { title: "", tags: [], prompt: userInput }
-
-      setSavedData([...savedData, newPrompt])
+      await addPrompt(newPrompt)
+      // Update local state after saving
+      setSavedData(prev => [...prev, newPrompt])
       setUserInput("")
     }
   }
@@ -36,7 +46,7 @@ function IndexPopup() {
   const searchedPrompts: Prompt[] = savedData.filter((promptData) => {
     return promptData.title.toLowerCase().includes(searchQuery.toLowerCase())
       || promptData.prompt.toLowerCase().includes(searchQuery.toLowerCase())
-      || promptData.tags.find(tag => tag.includes(searchQuery))
+      || promptData.tags.find(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   })
 
   return (

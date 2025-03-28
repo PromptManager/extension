@@ -1,5 +1,5 @@
-export type Prompt = {
+export interface Prompt {
     title: string;
-    tags: string[];
     prompt: string;
-};
+    tags: string[];
+  }
