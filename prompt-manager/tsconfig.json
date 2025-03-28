@@ -6,8 +6,7 @@
   "include": [
     ".plasmo/index.d.ts",
     "./**/*.ts",
-    "./**/*.tsx",
-    "./**/*.jsx"
+    "./**/*.tsx"
   ],
   "compilerOptions": {
     "paths": {
@@ -16,6 +15,7 @@
       ]
     },
     "baseUrl": ".",
-    "jsx": "react" // or "react-jsx" for React 17+
+    "verbatimModuleSyntax": false,
+    "jsx": "react-jsx"
   }
 }
