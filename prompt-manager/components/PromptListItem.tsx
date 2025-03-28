@@ -1,4 +1,4 @@
-import React from "~node_modules/@types/react"
+import React from "react";
 import type { Prompt } from "../interface/Prompt"
 
 export default function PromptListItem({ promptData }: { promptData: Prompt }) {
