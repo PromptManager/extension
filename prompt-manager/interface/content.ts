@@ -26,6 +26,7 @@ const prompt_selectors = {
 
 function detectLLM(): keyof typeof prompt_selectors | null {
     const hostName = window.location.host
+    console.log("Detecting LLM on:", hostName)
     return Object.keys(prompt_selectors).find(
         platform => hostName.includes(platform)
     ) as keyof typeof prompt_selectors | null
@@ -66,6 +67,7 @@ function sendPrompt(prompt: string, llm: keyof typeof prompt_selectors): void {
 }
 
 function observePromptInput(selector: string, llm: keyof typeof prompt_selectors): void {
+    console.log("Observor for:", llm)
     const targetNode = document.querySelector(selector)
 
     if (!targetNode) {
