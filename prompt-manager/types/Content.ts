@@ -1,5 +1,13 @@
-import exp from "constants"
 import type { PlasmoCSConfig } from "plasmo"
+
+interface PromptMessage {
+    type: "prompt_captured"
+    payload: {
+        prompt: string
+        llm: keyof typeof prompt_selectors
+        url: string
+    }
+}
  
 export const config: PlasmoCSConfig = {
   matches: ["https://chat.openai.com/*", "https://chat.deepseek.com/*"],
@@ -18,7 +26,7 @@ function detectLLM(): keyof typeof prompt_selectors | null {
     ) as keyof typeof prompt_selectors | null
 }
 
-function getPrompt(selector: string): string | null {
+export function getPrompt(selector: string): string | null {
     const inputElement = document.querySelector(selector) as HTMLTextAreaElement | HTMLDivElement || null
 
     if (!inputElement) {
@@ -36,7 +44,53 @@ function getPrompt(selector: string): string | null {
     return null
 }
 
-function main() {
+function sendPrompt(prompt: string, llm: keyof typeof prompt_selectors): void {
+    try {
+        const message: PromptMessage = {
+            type: "prompt_captured",
+            payload: {
+                prompt,
+                llm,
+                url: window.location.href
+            }
+        }
+        chrome.runtime.sendMessage(message)
+    } catch (error) {
+        console.error('Error sending prompt:', error)
+    }
+}
+
+function observePromptInput(selector: string, llm: keyof typeof prompt_selectors): void {
+    const targetNode = document.querySelector(selector)
+
+    if (!targetNode) {
+        console.log("Prompt input not found.")
+        return
+    }
+
+    const config: MutationObserverInit = {
+        characterData: true,
+        childList: true,
+        subtree: true
+    }
+
+    const callback: MutationCallback = () => {
+        const prompt = getPrompt(selector)
+        if (prompt) {
+            sendPrompt(prompt, llm)
+        }
+    }
+
+    const observer = new MutationObserver(callback)
+    observer.observe(targetNode, config)
+}
+
+function main(): void {
+    if (!chrome.runtime) {
+        console.error("Chrome runtime not available.")
+        return
+    }
+
     const llm = detectLLM()
 
     if (!llm) {
@@ -46,52 +100,18 @@ function main() {
 
     const selector = prompt_selectors[llm]
 
-    const sendPrompt = (prompt: string) => {
-        chrome.runtime.sendMessage({
-            type: "prompt_captured",
-            payload: {
-                prompt,
-                llm,
-                url: window.location.href
-            }
-        })
-    }
-
-    const observePromptInput = () => {
-        const targetNode = document.querySelector(selector)
-    
-        if (!targetNode) {
-            console.log("Prompt input not found.")
-            return
-        }
-    
-        const config = {
-            characterData: true,
-            childList: true,
-            subtree: true
-        }
-    
-        const callback: MutationCallback = (mutationsList) => {
-            for (const mutation of mutationsList) {
-                const prompt = getPrompt(selector)
-                if (prompt) {
-                    sendPrompt(prompt)
-                }
-            }
-        }
-    
-        const observer = new MutationObserver(callback)
-        observer.observe(targetNode, config)
-    }
-    
     const initialPrompt = getPrompt(selector)
     if (initialPrompt) {
-        sendPrompt(initialPrompt)
+        sendPrompt(initialPrompt, llm)
     }
 
-    observePromptInput()
+    observePromptInput(selector, llm)
 }
 
-main()
+if (document.readyState === "complete") {
+    main()
+} else {
+    window.addEventListener("load", main)
+}
 
 export {}
