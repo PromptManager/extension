@@ -22,6 +22,9 @@ function IndexPopup() {
 
   useEffect(() => {
     getCurrentUrl()
+    document.body.addEventListener("click", (e) => {
+      e.stopPropagation()
+    })
   }, [])
 
   const savePrompt = () => {

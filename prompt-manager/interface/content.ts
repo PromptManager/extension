@@ -4,8 +4,13 @@ interface PromptMessage {
     type: "prompt_captured"
     payload: {
         prompt: string
-        llm: keyof typeof prompt_selectors
+        llm: "chat.openai.com" | "chat.deepseek.com"
         url: string
+        timestamp?: number
+        metadata?: {
+            model?: string
+            conversationId?: string
+        }
     }
 }
  
