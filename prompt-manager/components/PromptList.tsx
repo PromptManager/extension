@@ -1,6 +1,6 @@
 import React from "react";
 import PromptListItem from "./PromptListItem";
-import type { Prompt } from "../types/Prompt";
+import type { Prompt } from "../interface/Prompt";
 
 
 export default function PromptList({ promptListData }: { promptListData: Prompt[] }) {
