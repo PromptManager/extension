@@ -26,18 +26,19 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "plasmo": "^0.90.3",
     "@ianvs/prettier-plugin-sort-imports": "4.1.1",
     "@jest/globals": "29.7.0",
     "@jest/types": "29.6.3",
     "@testing-library/react": "14.1.2",
     "@types/chrome": "0.0.258",
+    "@types/jest": "^29.5.14",
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
     "jest": "29.7.0",
     "jest-environment-jsdom": "29.7.0",
     "jest-webextension-mock": "3.8.9",
+    "plasmo": "^0.90.3",
     "prettier": "3.2.4",
     "ts-jest": "29.1.1",
     "typescript": "5.3.3"
