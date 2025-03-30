@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 import { render, screen } from "@testing-library/react";
-import PromptListItem from "../../components/PromptListItem";
-import type { Prompt } from "../../types/Prompt";
+import PromptListItem from "~components/PromptListItem";
+import type { Prompt } from "~interface/Prompt";
 
 const mockPrompt: Prompt = {
   title: "Test Prompt",
