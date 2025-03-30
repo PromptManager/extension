@@ -28,9 +28,7 @@ jobs:
           run_install: false
 
       - name: Install dependencies
-        run:
-         - cd prompt-manager
-         - pnpm install
+        run: pnpm install
 
       - name: Run Jest tests
         run: pnpm test
