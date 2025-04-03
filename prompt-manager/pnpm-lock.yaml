@@ -33,6 +33,9 @@ importers:
       '@types/chrome':
         specifier: 0.0.258
         version: 0.0.258
+      '@types/jest':
+        specifier: ^29.5.14
+        version: 29.5.14
       '@types/node':
         specifier: 20.11.5
         version: 20.11.5
@@ -1845,6 +1848,9 @@ packages:
 
   '@types/istanbul-reports@3.0.4':
     resolution: {integrity: sha512-pk2B1NWalF9toCRu6gjBzR69syFjP4Od8WRAX+0mmf9lAjCRicLOWc+ZrxZHx/0XRjotgkF9t6iaMJ+aXcOdZQ==}
+
+  '@types/jest@29.5.14':
+    resolution: {integrity: sha512-ZN+4sdnLUbo8EVvVc2ao0GFW6oVrQRPn4K2lglySj7APvSrgzxHiNNK99us4WDMi57xxA2yggblIAMNhXOotLQ==}
 
   '@types/jsdom@20.0.1':
     resolution: {integrity: sha512-d0r18sZPmMQr1eG35u12FZfhIXNrnsPU/g5wvRKCUf/tOGilKKwYMYGqh33BNR6ba+2gkHw1EUiHoN3mn7E5IQ==}
@@ -6491,6 +6497,11 @@ snapshots:
     dependencies:
       '@types/istanbul-lib-report': 3.0.3
 
+  '@types/jest@29.5.14':
+    dependencies:
+      expect: 29.7.0
+      pretty-format: 29.7.0
+
   '@types/jsdom@20.0.1':
     dependencies:
       '@types/node': 20.11.5
@@ -9285,7 +9296,7 @@ snapshots:
   yaml@1.10.2: {}
 
   yaml@2.7.0: {}
-  
+
   yargs-parser@21.1.1: {}
 
   yargs@17.7.2:
@@ -9299,5 +9310,5 @@ snapshots:
       yargs-parser: 21.1.1
 
   yocto-queue@0.1.0: {}
-  
+
   yoctocolors-cjs@2.1.2: {}
