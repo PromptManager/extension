@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import PromptList from "~components/PromptList"
 import type { Prompt } from "~interface/Prompt"
-import { getPrompts, addPrompt } from "~storage/storage"
+import { getPrompts, addPrompt, getCategories } from "~storage/storage"
 
 
 const mockPromptListData: Prompt[] = [{
@@ -36,6 +36,10 @@ function IndexPopup() {
       if (storedPrompts.length > 0) {
         setSavedData(storedPrompts)
       }
+
+      // Load categories
+      const storedCategories = await getCategories()
+      setCategories(storedCategories)
     }
     loadPrompts()
   }, [])
