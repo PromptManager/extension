@@ -17,7 +17,7 @@ jest.mock("@plasmohq/storage", () => ({
 
 
 // Import the functions to be tested
-import { getPrompts, addPrompt } from "~storage/storage"
+import { getPrompts, addPrompt, getCategories } from "~storage/storage"
 
 describe("getPrompts", () => {
   beforeEach(() => {
@@ -51,5 +51,40 @@ describe("addPrompt", () => {
     await addPrompt(newPrompt)
 
     expect(mockSet).toHaveBeenCalledWith("promptList", [...existingPrompts, newPrompt])
+  })
+})
+
+describe("getCategories", () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it("returns default categories if no categories are stored", async () => {
+    mockGet.mockResolvedValueOnce(null)
+    const categories = await getCategories()
+    expect(categories).toEqual(["All"])
+  })
+
+  it("returns stored categories if any exist", async () => {
+    const storedPrompts: Prompt[] = [
+      { title: "Test1", prompt: "Prompt 1", tags: [], category: "General" },
+      { title: "Test2", prompt: "Prompt 2", tags: [], category: "Work" },
+      { title: "Test3", prompt: "Prompt 3", tags: [], category: "General" }
+    ]
+    mockGet.mockResolvedValueOnce(storedPrompts)
+    
+    const categories = await getCategories()
+    expect(categories).toEqual(["All", "General", "Work"])
+  })
+
+  it("handles prompts with undefined category", async () => {
+    const storedPrompts: Prompt[] = [
+      { title: "Test1", prompt: "Prompt 1", tags: [], category: "General" },
+      { title: "Test2", prompt: "Prompt 2", tags: [] } // No category
+    ]
+    mockGet.mockResolvedValueOnce(storedPrompts)
+    
+    const categories = await getCategories()
+    expect(categories).toEqual(["All", "General"])
   })
 })
