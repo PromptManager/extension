@@ -20,6 +20,7 @@ function IndexPopup() {
   const [newCategory, setNewCategory] = useState<string>("")
   const [showCategoryInput, setShowCategoryInput] = useState<boolean>(false)
   const [currentCategory, setCurrentCategory] = useState<string>("General")
+  const [categories, setCategories] = useState<string[]>(["All", "General"])
 
   const getCurrentUrl = async () => {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
@@ -39,8 +40,6 @@ function IndexPopup() {
     loadPrompts()
   }, [])
 
-  const categories = ["All", ...Array.from(new Set(savedData.map(prompt => prompt.category || "General")))]
-
   const savePrompt = async () => {
     if (userInput.trim() !== "") {
       const newPrompt: Prompt = { title: "", tags: [], prompt: userInput, category: currentCategory }
@@ -54,6 +53,7 @@ function IndexPopup() {
   const createNewCategory = () => {
     if (newCategory.trim() !== "" && !categories.includes(newCategory)) {
       setCurrentCategory(newCategory)
+      setCategories(prev => [...prev, newCategory])
       setShowCategoryInput(false)
       setNewCategory("")
     }
