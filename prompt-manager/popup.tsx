@@ -3,10 +3,12 @@ import PromptList from "~components/PromptList"
 import type { Prompt } from "~interface/Prompt"
 import { getPrompts, addPrompt } from "~storage/storage"
 
+
 const mockPromptListData: Prompt[] = [{
   title: "Sample Prompt",
   prompt: "This is a sample prompt description.",
-  tags: ["Test Tag"]
+  tags: ["Test Tag"],
+  category: "General",
 }]
 
 function IndexPopup() {

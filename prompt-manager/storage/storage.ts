@@ -16,3 +16,9 @@ export async function addPrompt(newPrompt: Prompt): Promise<void> {
   const prompts = await getPrompts()
   await storage.set(STORAGE_KEY, [...prompts, newPrompt])
 }
+
+export async function getCategories(): Promise<string[]> {
+  const prompts = await getPrompts()
+  const categories = Array.from(new Set(prompts.map(prompt => prompt.category || "General")))
+  return ["All", ...categories]
+}
