@@ -2,9 +2,11 @@ import { useState } from "react"
 import type { Prompt } from "~interface/Prompt"
 import PromptList from "~components/PromptList"
 import { usePrompts } from "~hooks/usePrompts"
+import { ImportBtn } from "~components/ImportBtn";
+import { ExportBtn } from "~components/ExportBtn";
 
 function IndexPopup() {
-  const {prompts, setPrompts} = usePrompts();
+  const { prompts, setPrompts } = usePrompts();
   const [userInput, setUserInput] = useState("")
 
   const savePrompt = async () => {
@@ -51,6 +53,13 @@ function IndexPopup() {
       </div>
 
       <PromptList prompts={prompts} />
+
+      <div style={{ display: "flex", gap: "10px" }}>
+        <ImportBtn />
+        <ExportBtn />
+        <button onClick={() => (setPrompts(_ => []))}>Reset (only for testing)</button>
+      </div>
+
     </div>
   )
 }
