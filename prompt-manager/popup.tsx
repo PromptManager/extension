@@ -7,7 +7,6 @@ import { ExportBtn } from "~components/ExportBtn";
 
 function IndexPopup() {
   const { prompts, setPrompts } = usePrompts();
-  
   const [userInput, setUserInput] = useState("")
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedCategory, setSelectedCategory] = useState<string>("All")
