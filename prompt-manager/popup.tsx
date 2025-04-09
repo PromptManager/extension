@@ -167,19 +167,7 @@ function IndexPopup() {
       <div style={{ display: "flex", gap: "10px", marginTop: 16 }}>
         <ImportBtn />
         <ExportBtn />
-        <button 
-          onClick={() => (setPrompts(_ => []))}
-          style={{
-            padding: "8px 12px",
-            backgroundColor: "#dc3545",
-            color: "#fff",
-            border: "none",
-            borderRadius: 4,
-            cursor: "pointer"
-          }}
-        >
-          Reset (only for testing)
-        </button>
+        <button onClick={() => (setPrompts(_ => []))}>Reset (only for testing)</button>
       </div>
     </div>
   )
