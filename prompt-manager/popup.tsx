@@ -3,6 +3,8 @@ import PromptList from "~components/PromptList"
 import type { Prompt } from "~interface/Prompt"
 import { usePrompts } from "~hooks/usePrompts"
 import { useCurrentTabUrl } from "~hooks/useCurrentTabUrl"
+import { ImportBtn } from "~components/ImportBtn";
+import { ExportBtn } from "~components/ExportBtn";
 
 function IndexPopup() {
   const { prompts, setPrompts } = usePrompts();
@@ -165,7 +167,7 @@ function IndexPopup() {
 
       <div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-          <h3 style={{ margin: 0, color: "#333" }}>Search Prompts</h3>
+          <h3 style={{ margin: 0, color: "#333" }}>Saved Prompts</h3>
           <div style={{ display: "flex", alignItems: "center" }}>
             <span style={{ marginRight: 8 }}>Search by:</span>
             <div style={{ display: "flex", border: "1px solid #ccc", borderRadius: 4 }}>
@@ -240,6 +242,24 @@ function IndexPopup() {
             No prompts found. Try a different search or create a new prompt.
           </div>
         )}
+      </div>
+
+      <div style={{ display: "flex", gap: "10px", marginTop: 16 }}>
+        <ImportBtn />
+        <ExportBtn />
+        <button 
+          onClick={() => (setPrompts(_ => []))}
+          style={{
+            padding: "8px 12px",
+            backgroundColor: "#dc3545",
+            color: "#fff",
+            border: "none",
+            borderRadius: 4,
+            cursor: "pointer"
+          }}
+        >
+          Reset (only for testing)
+        </button>
       </div>
     </div>
   )
