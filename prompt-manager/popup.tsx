@@ -165,7 +165,7 @@ function IndexPopup() {
 
       <div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-          <h3 style={{ margin: 0, color: "#333" }}>Saved Prompts</h3>
+          <h3 style={{ margin: 0, color: "#333" }}>Search Prompts</h3>
           <div style={{ display: "flex", alignItems: "center" }}>
             <span style={{ marginRight: 8 }}>Search by:</span>
             <div style={{ display: "flex", border: "1px solid #ccc", borderRadius: 4 }}>
