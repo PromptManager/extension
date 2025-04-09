@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react"
 import PromptList from "~components/PromptList"
 import type { Prompt } from "~interface/Prompt"
 import { usePrompts } from "~hooks/usePrompts"
-import { useCurrentTabUrl } from "~hooks/useCurrentTabUrl"
 import { ImportBtn } from "~components/ImportBtn";
 import { ExportBtn } from "~components/ExportBtn";
 
 function IndexPopup() {
   const { prompts, setPrompts } = usePrompts();
-  const currentUrl = useCurrentTabUrl();
   
   const [userInput, setUserInput] = useState("")
   const [searchQuery, setSearchQuery] = useState<string>("")
