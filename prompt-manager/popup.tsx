@@ -1,57 +1,67 @@
-import { useState } from "react"
+import React, { useState, useEffect } from "react"
 import PromptList from "~components/PromptList"
 import type { Prompt } from "~interface/Prompt"
-import { getPrompts, addPrompt } from "~storage/storage"
-
-const mockPromptListData: Prompt[] = [{
-  title: "Sample Prompt",
-  prompt: "This is a sample prompt description.",
-  tags: ["Test Tag"]
-}]
+import { usePrompts } from "~hooks/usePrompts"
+import { useCurrentTabUrl } from "~hooks/useCurrentTabUrl"
 
 function IndexPopup() {
-  const {prompts, setPrompts} = usePrompts();
+  const { prompts, setPrompts } = usePrompts();
+  const currentUrl = useCurrentTabUrl();
+  
   const [userInput, setUserInput] = useState("")
-  const [savedData, setSavedData] = useState<Prompt[]>(mockPromptListData)
-  const [currentUrl, setCurrentUrl] = useState<string>("")
   const [searchQuery, setSearchQuery] = useState<string>("")
+  const [selectedCategory, setSelectedCategory] = useState<string>("All")
+  const [newCategory, setNewCategory] = useState<string>("")
+  const [showCategoryInput, setShowCategoryInput] = useState<boolean>(false)
+  const [currentCategory, setCurrentCategory] = useState<string>("General")
+  const [categories, setCategories] = useState<string[]>(["All", "General"])
 
-  const getCurrentUrl = async () => {
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
-    const tab = tabs[0]
-    setCurrentUrl(tab.url)
-  }
-
+  // Get unique categories from prompts
   useEffect(() => {
-    getCurrentUrl()
-    async function loadPrompts() {
-      // Try to load stored prompts; if empty, fallback to mock data
-      const storedPrompts = await getPrompts()
-      if (storedPrompts.length > 0) {
-        setSavedData(storedPrompts)
-      }
+    if (prompts && prompts.length > 0) {
+      const uniqueCategories = Array.from(
+        new Set(prompts.map(prompt => prompt.category || "General"))
+      )
+      setCategories(["All", ...uniqueCategories])
     }
-    loadPrompts()
-  }, [])
+  }, [prompts])
 
-  const savePrompt = async () => {
+  const savePrompt = () => {
     if (userInput.trim() !== "") {
-      const newPrompt: Prompt = { title: "", tags: [], prompt: userInput }
-      await addPrompt(newPrompt)
-      // Update local state after saving
-      setSavedData(prev => [...prev, newPrompt])
+      const newPrompt: Prompt = { 
+        title: "", 
+        tags: [], 
+        prompt: userInput, 
+        category: currentCategory 
+      }
+
+      setPrompts((existingPrompts) => [...existingPrompts, newPrompt])
       setUserInput("")
     }
   }
 
-  const searchedPrompts: Prompt[] = savedData.filter((promptData) => {
-    return promptData.title.toLowerCase().includes(searchQuery.toLowerCase())
-      || promptData.prompt.toLowerCase().includes(searchQuery.toLowerCase())
-      || promptData.tags.find(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+  const createNewCategory = () => {
+    if (newCategory.trim() !== "" && !categories.includes(newCategory)) {
+      setCurrentCategory(newCategory)
+      setCategories(prev => [...prev, newCategory])
+      setShowCategoryInput(false)
+      setNewCategory("")
+    }
+  }
+
+  const searchedPrompts = prompts.filter((promptData) => {
+    const matchesSearch = 
+      (promptData.title?.toLowerCase() || "").includes(searchQuery.toLowerCase()) ||
+      promptData.prompt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      promptData.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+    
+    const matchesCategory = selectedCategory === "All" || promptData.category === selectedCategory;
+    
+    return matchesSearch && matchesCategory;
   })
 
   return (
-    <div style={{ padding: 16, fontFamily: "Arial, sans-serif", minWidth: "350px" }}>
+    <div style={{ padding: 16, fontFamily: "Arial, sans-serif", minWidth: "400px" }}>
       <h2 style={{ textAlign: "center", color: "#333" }}>Prompt Manager</h2>
 
       <div style={{ marginBottom: 16 }}>
@@ -151,23 +161,41 @@ function IndexPopup() {
 
       <div style={{ marginBottom: 16 }}>
         <h2 style={{ color: "#333" }}>Search Prompts</h2>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search Saved Prompt"
-          style={{
-            width: "100%",
-            padding: 8,
-            borderRadius: 4,
-            border: "1px solid #ccc"
-          }}
-        />
+        <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search Saved Prompt"
+            style={{
+              flex: 2,
+              padding: 8,
+              borderRadius: 4,
+              border: "1px solid #ccc"
+            }}
+          />
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            style={{
+              flex: 1,
+              padding: 8,
+              borderRadius: 4,
+              border: "1px solid #ccc"
+            }}
+          >
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div>
         <h2 style={{ color: "#333" }}>Saved Prompts</h2>
-        <PromptList promptListData={searchedPrompts} />
+        <PromptList prompts={searchedPrompts} />
       </div>
     </div>
   )
