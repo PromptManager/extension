@@ -1,26 +1,20 @@
-import React, { useState, useEffect } from "react"
+import { useState } from "react"
 import PromptList from "~components/PromptList"
 import type { Prompt } from "~interface/Prompt"
-import { getPrompts, addPrompt, getCategories } from "~storage/storage"
-
+import { getPrompts, addPrompt } from "~storage/storage"
 
 const mockPromptListData: Prompt[] = [{
   title: "Sample Prompt",
   prompt: "This is a sample prompt description.",
-  tags: ["Test Tag"],
-  category: "General",
+  tags: ["Test Tag"]
 }]
 
 function IndexPopup() {
+  const {prompts, setPrompts} = usePrompts();
   const [userInput, setUserInput] = useState("")
   const [savedData, setSavedData] = useState<Prompt[]>(mockPromptListData)
   const [currentUrl, setCurrentUrl] = useState<string>("")
   const [searchQuery, setSearchQuery] = useState<string>("")
-  const [selectedCategory, setSelectedCategory] = useState<string>("All")
-  const [newCategory, setNewCategory] = useState<string>("")
-  const [showCategoryInput, setShowCategoryInput] = useState<boolean>(false)
-  const [currentCategory, setCurrentCategory] = useState<string>("General")
-  const [categories, setCategories] = useState<string[]>(["All", "General"])
 
   const getCurrentUrl = async () => {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
@@ -36,17 +30,13 @@ function IndexPopup() {
       if (storedPrompts.length > 0) {
         setSavedData(storedPrompts)
       }
-
-      // Load categories
-      const storedCategories = await getCategories()
-      setCategories(storedCategories)
     }
     loadPrompts()
   }, [])
 
   const savePrompt = async () => {
     if (userInput.trim() !== "") {
-      const newPrompt: Prompt = { title: "", tags: [], prompt: userInput, category: currentCategory }
+      const newPrompt: Prompt = { title: "", tags: [], prompt: userInput }
       await addPrompt(newPrompt)
       // Update local state after saving
       setSavedData(prev => [...prev, newPrompt])
@@ -54,27 +44,14 @@ function IndexPopup() {
     }
   }
 
-  const createNewCategory = () => {
-    if (newCategory.trim() !== "" && !categories.includes(newCategory)) {
-      setCurrentCategory(newCategory)
-      setCategories(prev => [...prev, newCategory])
-      setShowCategoryInput(false)
-      setNewCategory("")
-    }
-  }
-
   const searchedPrompts: Prompt[] = savedData.filter((promptData) => {
-    const matchesSearch = promptData.title?.toLowerCase().includes(searchQuery.toLowerCase())
+    return promptData.title.toLowerCase().includes(searchQuery.toLowerCase())
       || promptData.prompt.toLowerCase().includes(searchQuery.toLowerCase())
-      || promptData.tags?.find(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    const matchesCategory = selectedCategory === "All" || promptData.category === selectedCategory;
-    
-    return matchesSearch && matchesCategory;
+      || promptData.tags.find(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   })
 
   return (
-    <div style={{ padding: 16, fontFamily: "Arial, sans-serif", minWidth:"400px"}}>
+    <div style={{ padding: 16, fontFamily: "Arial, sans-serif", minWidth: "350px" }}>
       <h2 style={{ textAlign: "center", color: "#333" }}>Prompt Manager</h2>
 
       <div style={{ marginBottom: 16 }}>
@@ -165,7 +142,7 @@ function IndexPopup() {
             color: "#fff",
             border: "none",
             borderRadius: 4,
-            cursor: "pointer"
+            cursor: "pointer",
           }}
         >
           Save Prompt
@@ -174,36 +151,18 @@ function IndexPopup() {
 
       <div style={{ marginBottom: 16 }}>
         <h2 style={{ color: "#333" }}>Search Prompts</h2>
-        <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search Saved Prompt"
-            style={{
-              width: "100%",
-              padding: 8,
-              borderRadius: 4,
-              border: "1px solid #ccc"
-            }}
-          />
-          <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            style={{
-              flex: 1,
-              padding: 8,
-              borderRadius: 4,
-              border: "1px solid #ccc"
-            }}
-          >
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </div>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search Saved Prompt"
+          style={{
+            width: "100%",
+            padding: 8,
+            borderRadius: 4,
+            border: "1px solid #ccc"
+          }}
+        />
       </div>
 
       <div>
