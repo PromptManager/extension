@@ -119,16 +119,16 @@ export default function PromptList({ prompts }: { prompts: Prompt[] }) {
                         No prompts found. Try a different search or create a new prompt.
                     </div>
                 )
-            ) : null}
-
-            <div>
-                <h2 style={{ color: "#333" }}>Saved Prompts</h2>
-                <ul style={{ listStyleType: "none", padding: 0 }}>
-                    {prompts.map((item, index) => (
-                        <PromptListItem key={index} promptData={item} />
-                    ))}
-                </ul>
-            </div>
+            ) : (
+                <div>
+                    <h2 style={{ color: "#333" }}>Saved Prompts</h2>
+                    <ul style={{ listStyleType: "none", padding: 0 }}>
+                        {prompts.map((item, index) => (
+                            <PromptListItem key={index} promptData={item} />
+                        ))}
+                    </ul>
+                </div>
+            )}
         </div>
     );
 }
