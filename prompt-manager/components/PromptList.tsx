@@ -11,25 +11,7 @@ export default function PromptList({ prompts }: { prompts: Prompt[] }) {
     const [categories, setCategories] = useState<string[]>(["All", "General"])
     const [searchMethod, setSearchMethod] = useState<"keyword" | "category">("keyword")
 
-    const searchedPrompts: Prompt[] = (prompts != undefined ? prompts : []).filter(({ title, prompt, tags }: Prompt) => {
-        const query = searchQuery.toLowerCase()
-        return (
-            title.toLowerCase().includes(query) ||
-            prompt.toLowerCase().includes(query) ||
-            tags.some((tag) => tag.toLowerCase().includes(query))
-        )
-    })
-
-    const createNewCategory = () => {
-        if (newCategory.trim() !== "" && !categories.includes(newCategory)) {
-          setCurrentCategory(newCategory)
-          setCategories(prev => [...prev, newCategory])
-          setShowCategoryInput(false)
-          setNewCategory("")
-        }
-      }
-    
-      const filteredPrompts = prompts.filter((promptData) => {
+    const filteredPrompts = prompts.filter((promptData) => {
         if (searchMethod === "keyword" && searchQuery) {
           return (
             (promptData.title?.toLowerCase() || "").includes(searchQuery.toLowerCase()) ||
@@ -40,7 +22,16 @@ export default function PromptList({ prompts }: { prompts: Prompt[] }) {
           return selectedCategory === "All" || promptData.category === selectedCategory;
         }
         return true;
-      });
+    });
+
+    const createNewCategory = () => {
+        if (newCategory.trim() !== "" && !categories.includes(newCategory)) {
+          setCurrentCategory(newCategory)
+          setCategories(prev => [...prev, newCategory])
+          setShowCategoryInput(false)
+          setNewCategory("")
+        }
+    }
 
     return (
         <div>
@@ -85,7 +76,7 @@ export default function PromptList({ prompts }: { prompts: Prompt[] }) {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by keyword..."
+                placeholder="Search Saved Prompt"
                 style={{
                     width: "100%",
                     padding: 8,
@@ -113,22 +104,27 @@ export default function PromptList({ prompts }: { prompts: Prompt[] }) {
             )}
             </div>
 
-            {filteredPrompts.length > 0 ? (
-                <ul style={{ listStyleType: "none", padding: 0 }}>
-                    {filteredPrompts.map((item, index) => (
-                        <PromptListItem key={index} promptData={item} />
-                    ))}
-                </ul>
-            ) : (
-                <div style={{ textAlign: "center", padding: 20, color: "#666" }}>
-                    No prompts found. Try a different search or create a new prompt.
-                </div>
-            )}
+            {searchQuery || selectedCategory !== "All" ? (
+                filteredPrompts.length > 0 ? (
+                    <div>
+                        <h4 style={{ color: "#555" }}>Search Results</h4>
+                        <ul style={{ listStyleType: "none", padding: 0 }}>
+                            {filteredPrompts.map((item, index) => (
+                                <PromptListItem key={index} promptData={item} />
+                            ))}
+                        </ul>
+                    </div>
+                ) : (
+                    <div style={{ textAlign: "center", padding: 20, color: "#666" }}>
+                        No prompts found. Try a different search or create a new prompt.
+                    </div>
+                )
+            ) : null}
 
             <div>
                 <h2 style={{ color: "#333" }}>Saved Prompts</h2>
                 <ul style={{ listStyleType: "none", padding: 0 }}>
-                    {searchedPrompts.map((item, index) => (
+                    {prompts.map((item, index) => (
                         <PromptListItem key={index} promptData={item} />
                     ))}
                 </ul>
