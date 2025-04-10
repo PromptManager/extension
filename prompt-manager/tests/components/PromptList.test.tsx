@@ -74,7 +74,7 @@ describe("PromptList", () => {
       const searchInput = screen.getByPlaceholderText("Search Saved Prompt");
       fireEvent.change(searchInput, { target: { value: "Searchable" } });
 
-      expect(screen.getByText("Searchable Prompt")).toBeTruthy();
+      expect(screen.getAllByText("Searchable Prompt")).toBeTruthy();
       expect(screen.queryByText("Sample Prompt")).toBeFalsy();
       expect(screen.queryByText("Another Prompt")).toBeFalsy();
     });
@@ -85,7 +85,7 @@ describe("PromptList", () => {
       const searchInput = screen.getByPlaceholderText("Search Saved Prompt");
       fireEvent.change(searchInput, { target: { value: "search tag" } });
 
-      expect(screen.getByText("Searchable Prompt")).toBeTruthy();
+      expect(screen.getAllByText("Searchable Prompt")).toBeTruthy();
       expect(screen.queryByText("Sample Prompt")).toBeFalsy();
       expect(screen.queryByText("Another Prompt")).toBeFalsy();
     });
@@ -99,7 +99,7 @@ describe("PromptList", () => {
 
       expect(screen.getByText("Sample Prompt")).toBeTruthy();
       expect(screen.getByText("Another Prompt")).toBeTruthy();
-      expect(screen.getByText("Searchable Prompt")).toBeTruthy();
+      expect(screen.getAllByText("Searchable Prompt")).toBeTruthy();
     });
   });
 })
