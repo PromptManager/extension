@@ -18,7 +18,12 @@ const config = {
   testEnvironment: "jsdom",
   transform: {
     "^.+.tsx?$": ["ts-jest", {}],
+    "^.+.jsx?$": ["ts-jest", {}]
   },
+  transformIgnorePatterns: [
+    "/node_modules/(?!(@plasmohq|pify)).+\\.js$"
+  ],
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"]
 }
 
 export default config
