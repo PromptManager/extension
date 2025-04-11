@@ -12,13 +12,9 @@ const config = {
   setupFiles: ["jest-webextension-mock"],
   extensionsToTreatAsEsm: [".ts", ".tsx"],
   testRegex: ["^.+\\.test.tsx?$"],
-  moduleNameMapper: {
-    ...pathsToModuleNameMapper(tsconfig.compilerOptions.paths, {
-      prefix: "<rootDir>/"
-    }),
-    // Mock the problematic modules
-    "@plasmohq/storage/hook": "<rootDir>/tests/__mocks__/storageMock.ts"
-  },
+  moduleNameMapper: pathsToModuleNameMapper(tsconfig.compilerOptions.paths, {
+    prefix: "<rootDir>/"
+  }),
   testEnvironment: "jsdom",
   transform: {
     "^.+\\.(ts|tsx|js|jsx)$": ["ts-jest", {
@@ -26,10 +22,11 @@ const config = {
     }],
   },
   transformIgnorePatterns: [
-    // Be more specific about what to transform
-    "node_modules/(?!(@plasmohq|pify|.*\\.mjs$))"
+    "node_modules/(?!(.*\\.mjs$))"
   ],
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node", "mjs"]
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node", "mjs"],
+  // Add this to tell Jest to mock this module
+  moduleDirectories: ["node_modules", "<rootDir>"]
 }
 
 export default config
