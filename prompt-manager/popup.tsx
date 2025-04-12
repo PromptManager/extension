@@ -4,6 +4,7 @@ import type { Prompt } from "~interface/Prompt"
 import { usePrompts } from "~hooks/usePrompts"
 import { ImportBtn } from "~components/ImportBtn";
 import { ExportBtn } from "~components/ExportBtn";
+import { getCurrentTabUrl } from "~utils/get-tab-url"
 
 function IndexPopup() {
   const { prompts, setPrompts } = usePrompts();
@@ -26,19 +27,31 @@ function IndexPopup() {
     }
   }, [prompts])
 
-  const savePrompt = () => {
-    if (userInput.trim() !== "") {
-      const newPrompt: Prompt = { 
-        title: "", 
-        tags: [], 
-        prompt: userInput, 
-        category: currentCategory 
-      }
+ const savePrompt = async () => {
+  if (userInput.trim() !== "") {
+    let website = ""
 
-      setPrompts((existingPrompts) => [...existingPrompts, newPrompt])
-      setUserInput("")
+    try {
+      website = await getCurrentTabUrl()
+    } catch (err) {
+      console.error("Could not get tab URL:", err)
+      website = "unknown"
     }
+
+    const newPrompt: Prompt = {
+      title: "",
+      tags: [],
+      prompt: userInput,
+      category: currentCategory,
+      createdAt: new Date(),
+      website
+    }
+
+    setPrompts((existingPrompts) => [...existingPrompts, newPrompt])
+    setUserInput("")
   }
+}
+
 
   const createNewCategory = () => {
     if (newCategory.trim() !== "" && !categories.includes(newCategory)) {
