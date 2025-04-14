@@ -4,7 +4,7 @@ import type { Prompt } from "~interface/Prompt"
 import { usePrompts } from "~hooks/usePrompts"
 import { ImportBtn } from "~components/ImportBtn";
 import { ExportBtn } from "~components/ExportBtn";
-import { getCurrentTabUrl } from "~utils/get-tab-url"
+//import { getCurrentTabUrl } from "~utils/get-tab-url"
 
 function IndexPopup() {
   const { prompts, setPrompts } = usePrompts();
@@ -32,7 +32,7 @@ function IndexPopup() {
     let website = ""
 
     try {
-      website = await getCurrentTabUrl()
+      website = await useCurrentTabUrl()
     } catch (err) {
       console.error("Could not get tab URL:", err)
       website = "unknown"
