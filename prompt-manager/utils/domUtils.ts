@@ -38,7 +38,16 @@ export const setElementValue = (element: HTMLElement, value: string): void => {
       element.dispatchEvent(new InputEvent('input', inputEventInit));
       inputEventDispatched = true;
     } catch (error) {
-      console.error("Prompt Manager (domUtils): Error dispatching InputEvent:", error);
+      console.error(
+        "Prompt Manager (domUtils): Error dispatching InputEvent.",
+        {
+          error,
+          elementTag: element.tagName,
+          elementId: element.id || "N/A",
+          elementClass: element.className || "N/A",
+          value
+        }
+      );
       element.dispatchEvent(new Event('input', { bubbles: true }));
       inputEventDispatched = true;
     }
