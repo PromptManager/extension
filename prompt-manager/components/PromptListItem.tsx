@@ -93,7 +93,7 @@ export default function PromptListItem({ promptData }: PromptListItemProps) {
       </div>
       <button
         onClick={handleUsePrompt}
-        title="Use this prompt in the a valid provider tab"
+        title="Use this prompt in a valid provider tab"
         style={buttonStyle}>
         Use
       </button>
