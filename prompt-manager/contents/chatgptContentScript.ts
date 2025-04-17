@@ -1,14 +1,10 @@
 import type { PlasmoCSConfig } from "plasmo"
 import { findInputElement, setElementValue, simulateEnterKey } from "~/utils/domUtils"
+import type { ScriptResponse } from "~/interface/ScriptResponse";
 
 interface FillPromptMessage {
   type: "FILL_CHATGPT_PROMPT";
   prompt: string;
-}
-
-interface ScriptResponse {
-  success: boolean;
-  error?: string;
 }
 
 export const config: PlasmoCSConfig = {

@@ -1,9 +1,7 @@
 import React from "react"
 
 import type { Prompt } from "~/interface/Prompt"
-
-const CHATGPT_URLS = ["https://chatgpt.com/", "https://chat.openai.com/"]
-const MESSAGE_TYPE_FILL_PROMPT = "FILL_CHATGPT_PROMPT"
+import { sendPromptToActiveTab } from "~/services/llmIntegration"
 
 interface PromptListItemProps {
   promptData: Prompt
@@ -11,67 +9,18 @@ interface PromptListItemProps {
 
 export default function PromptListItem({ promptData }: PromptListItemProps) {
   const handleUsePrompt = async () => {
-    try {
-      const [tab] = await chrome.tabs.query({
-        active: true,
-        currentWindow: true
-      })
-      console.log("Attempting to send prompt. Active tab found:", tab)
+    console.log("Attempting to send prompt via llmIntegration service...")
+    const result = await sendPromptToActiveTab(promptData.prompt)
 
-      if (!tab?.id) {
-        console.error("Could not find active tab ID.")
-        alert("Could not find an active tab to send the prompt to.")
-        return
-      }
-
-      const isValidChatGPTTab =
-        tab.url && CHATGPT_URLS.some((url) => tab.url?.startsWith(url))
-
-      if (!isValidChatGPTTab) {
-        console.warn(`Active tab (URL: ${tab.url}) is not a ChatGPT page.`)
-        alert(
-          `This feature only works when a ChatGPT tab (${CHATGPT_URLS.join(" or ")}) is active. Current active tab: ${tab.url || "Unknown"}`
-        )
-        return
-      }
-
-      console.log(
-        `Targeting ChatGPT tab (ID: ${tab.id}, URL: ${tab.url}). Sending prompt:`,
-        promptData.prompt
+    if (result.success) {
+      console.log("Prompt sent successfully via service!")
+      window.close() // Close the popup on success
+    } else {
+      console.error("Failed to send prompt via service:", result.error)
+      alert(
+        result.error ||
+          "An unknown error occurred while sending the prompt."
       )
-      chrome.tabs.sendMessage(
-        tab.id,
-        { type: MESSAGE_TYPE_FILL_PROMPT, prompt: promptData.prompt },
-        (response) => {
-          // Check for errors *after* the message is sent
-          if (chrome.runtime.lastError) {
-            const errorMessage = chrome.runtime.lastError.message
-            console.error("Error sending message:", errorMessage)
-            if (errorMessage?.includes("Receiving end does not exist")) {
-              alert(
-                `Error: Could not connect to the Prompt Manager script on the ChatGPT page. Please ensure the ChatGPT tab is fully loaded and try again. Reloading the tab might help.`
-              )
-            } else {
-              alert(`Error sending prompt: ${errorMessage}.`)
-            }
-            return
-          }
-
-          if (response?.success) {
-            console.log("Prompt sent successfully!")
-            window.close()
-          } else {
-            console.error("Failed to send prompt. Response:", response)
-            alert(
-              `Failed to send prompt: ${response?.error || "Content script did not report success."}. Check the console on the ChatGPT page for more details.`
-            )
-          }
-        }
-      )
-    } catch (error: any) {
-      const errorMessage = error.message || String(error)
-      console.error("Error querying tabs:", error)
-      alert(`Error accessing tabs: ${errorMessage}`)
     }
   }
 
@@ -144,7 +93,7 @@ export default function PromptListItem({ promptData }: PromptListItemProps) {
       </div>
       <button
         onClick={handleUsePrompt}
-        title="Use this prompt in the active ChatGPT tab"
+        title="Use this prompt in the a valid provider tab"
         style={buttonStyle}>
         Use
       </button>
