@@ -11,7 +11,8 @@ jest.mock("@plasmohq/storage/hook", () => ({
   useStorage: jest.fn()
 }))
 
-const newPrompt = { title: "Test Title", prompt: "Test Prompt", tags: [] }
+const newPrompt = { title: "Test Title", prompt: "Test Prompt", tags: [], createdAt: new Date(),
+    website: "https://chatgpt.com/"  }
 
 describe("usePrompts", () => {
   it("should return an empty array as the initial value for prompts", () => {
