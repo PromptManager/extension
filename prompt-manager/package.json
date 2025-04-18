@@ -1,7 +1,7 @@
 {
   "name": "prompt-manager",
   "displayName": "Prompt manager",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A browser extension for storing and retrieving user prompts",
   "author": "Steven Kotwal <stevenkotwal@ufl.edu>",
   "contributors": [
