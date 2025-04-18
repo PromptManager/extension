@@ -38,7 +38,7 @@ const isFillPromptMessage = (msg: unknown): msg is FillPromptMessage => {
 
 /**
  * Handles incoming messages from other parts of the extension (e.g., the popup).
- * Listens for 'FILL_CHATGPT_PROMPT' messages, fills the chat input,
+ * Listens for 'FILL_DEEKSEEK_PROMPT' messages, fills the chat input,
  * and simulates an Enter key press.
  *
  * @param message The message object received.
