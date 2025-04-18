@@ -14,14 +14,14 @@ const mockPromptListData: Prompt[] = [
   {
     title: "Another Prompt",
     prompt: "This is another sample prompt description.",
-    tags: ["Another Tag"]
+    tags: ["Another Tag"],
     createdAt: new Date(),
     website: "https://chatgpt.com/" 
   },
   {
     title: "Searchable Prompt",
     prompt: "This prompt is meant to be found.",
-    tags: ["Search Tag"]
+    tags: ["Search Tag"],
     createdAt: new Date(),
     website: "https://chatgpt.com/" 
   }
