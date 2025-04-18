@@ -26,7 +26,7 @@ describe("usePrompts", () => {
 
   it("should return the stored prompts from the list if they exist", () => {
     const mockPrompts: Prompt[] = [
-      { title: "Test Title", prompt: "Test Prompt", tags: [] }
+      { title: "Test Title", prompt: "Test Prompt", tags: [], createdAt: new Date(), website: "https://chatgpt.com/" }
     ]
     const mockUseStorage = jest.fn(() => [mockPrompts, jest.fn()])
     ;(useStorage as jest.Mock).mockImplementation(mockUseStorage)
