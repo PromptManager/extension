@@ -4,8 +4,10 @@ import { Prompt } from "~interface/Prompt";
 
 describe("promptUtils", () => {
   const mockPrompts: Prompt[] = [
-    { title: "Test Prompt", prompt: "This is a test prompt.", tags: ["Tag1"] },
-    { title: "Another Prompt", prompt: "This is another test prompt.", tags: ["Tag2"] },
+    { title: "Test Prompt", prompt: "This is a test prompt.", tags: ["Tag1"], createdAt: new Date(),
+    website: "https://chatgpt.com/"  },
+    { title: "Another Prompt", prompt: "This is another test prompt.", tags: ["Tag2"], createdAt: new Date(),
+    website: "https://chatgpt.com/"  },
   ];
 
   beforeEach(() => {

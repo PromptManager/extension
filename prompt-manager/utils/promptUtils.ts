@@ -30,7 +30,11 @@ export function importPrompts(file: File): Promise<Prompt[]> {
     reader.onload = (event) => {
       try {
         const result = event.target?.result as string;
-        const importedPrompts: Prompt[] = JSON.parse(result);
+        const rawPrompts = JSON.parse(result);
+        const importedPrompts: Prompt[] = rawPrompts.map((p: any) => ({
+          ...p,
+          createdAt: new Date(p.createdAt)
+        }));
         resolve(importedPrompts);
       } catch (error) {
         reject(new Error("Invalid JSON file"));

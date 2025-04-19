@@ -7,6 +7,8 @@ const mockPrompt: Prompt = {
   title: "Test Prompt",
   prompt: "This is a test prompt description.",
   tags: ["Tag1", "Tag2"],
+  createdAt: new Date(),
+  website: "https://chatgpt.com/" 
 };
 
 describe("PromptListItem", () => {
