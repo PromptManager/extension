@@ -8,7 +8,7 @@ import {
 } from "~/utils/domUtils"
 
 interface FillPromptMessage {
-  type: "FILL_CHATGPT_PROMPT"
+  type: "FILL_DEEPSEEK_PROMPT"
   prompt: string
 }
 
