@@ -2,13 +2,34 @@ import PromptListItem from "./PromptListItem";
 import type { Prompt } from "../interface/Prompt";
 import { useState } from "react";
 
-export default function PromptList({ prompts }: { prompts: Prompt[] }) {
+interface PromptListProps {
+  prompts: Prompt[];
+  categories: string[];
+  selectedCategory: string;
+  setSelectedCategory: (category: string) => void;
+  currentCategory: string;
+  setCurrentCategory: (category: string) => void;
+  showCategoryInput: boolean;
+  setShowCategoryInput: (show: boolean) => void;
+  newCategory: string;
+  setNewCategory: (category: string) => void;
+  createNewCategory: () => void;
+}
+
+export default function PromptList({
+  prompts,
+  categories,
+  selectedCategory,
+  setSelectedCategory,
+  currentCategory,
+  setCurrentCategory,
+  showCategoryInput,
+  setShowCategoryInput,
+  newCategory,
+  setNewCategory,
+  createNewCategory
+}: PromptListProps) {
     const [searchQuery, setSearchQuery] = useState<string>("")
-    const [selectedCategory, setSelectedCategory] = useState<string>("All")
-    const [newCategory, setNewCategory] = useState<string>("")
-    const [showCategoryInput, setShowCategoryInput] = useState<boolean>(false)
-    const [currentCategory, setCurrentCategory] = useState<string>("General")
-    const [categories, setCategories] = useState<string[]>(["All", "General"])
     const [searchMethod, setSearchMethod] = useState<"keyword" | "category">("keyword")
 
     const filteredPrompts = prompts.filter((promptData) => {
@@ -23,15 +44,6 @@ export default function PromptList({ prompts }: { prompts: Prompt[] }) {
         }
         return true;
     });
-
-    const createNewCategory = () => {
-        if (newCategory.trim() !== "" && !categories.includes(newCategory)) {
-          setCurrentCategory(newCategory)
-          setCategories(prev => [...prev, newCategory])
-          setShowCategoryInput(false)
-          setNewCategory("")
-        }
-    }
 
     return (
         <div>
