@@ -45,7 +45,10 @@
   },
   "manifest": {
     "host_permissions": [
-      "https://*/*"
+      "https://chatgpt.com/*",
+      "https://chat.chatgpt.com/*",
+      "https://deepseek.com/*",
+      "https://chat.deepseek.com/*"
     ],
     "permissions": [
       "storage",
