@@ -21,7 +21,6 @@ const mockPromptListData: Prompt[] = [
   }
 ];
 
-// Mock props for PromptList component
 const mockProps = {
   categories: ["All", "General"],
   selectedCategory: "All",
