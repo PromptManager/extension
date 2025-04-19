@@ -14,7 +14,6 @@ function IndexPopup() {
   const [showCategoryInput, setShowCategoryInput] = useState<boolean>(false)
   const [currentCategory, setCurrentCategory] = useState<string>("General")
   const [categories, setCategories] = useState<string[]>(["All", "General"])
-  const [searchMethod, setSearchMethod] = useState<"keyword" | "category">("keyword")
 
   // Get unique categories from prompts
   useEffect(() => {
@@ -48,19 +47,6 @@ function IndexPopup() {
       setNewCategory("")
     }
   }
-
-  const filteredPrompts = prompts.filter((promptData) => {
-    if (searchMethod === "keyword" && searchQuery) {
-      return (
-        (promptData.title?.toLowerCase() || "").includes(searchQuery.toLowerCase()) ||
-        promptData.prompt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        promptData.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
-    } else if (searchMethod === "category") {
-      return selectedCategory === "All" || promptData.category === selectedCategory;
-    }
-    return true;
-  });
 
   return (
     <div style={{ padding: 16, fontFamily: "Arial, sans-serif", minWidth: "400px" }}>
@@ -162,7 +148,19 @@ function IndexPopup() {
         </button>
       </div>
 
-      <PromptList prompts={filteredPrompts} />
+      <PromptList 
+        prompts={prompts} 
+        categories={categories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        currentCategory={currentCategory}
+        setCurrentCategory={setCurrentCategory}
+        showCategoryInput={showCategoryInput}
+        setShowCategoryInput={setShowCategoryInput}
+        newCategory={newCategory}
+        setNewCategory={setNewCategory}
+        createNewCategory={createNewCategory}
+      />
 
       <div style={{ display: "flex", gap: "10px", marginTop: 16 }}>
         <ImportBtn />
