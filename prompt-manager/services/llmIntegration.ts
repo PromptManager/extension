@@ -1,4 +1,4 @@
-import type { ScriptResponse } from "~/interface/ScriptResponse";
+import type { ScriptResponse } from "~/interface/ScriptResponse"
 
 interface LlmProvider {
   urls: string[]
@@ -13,6 +13,11 @@ const providers: Record<string, LlmProvider> = {
     name: "ChatGPT",
     urls: ["https://chatgpt.com/", "https://chat.openai.com/"],
     messageType: "FILL_CHATGPT_PROMPT"
+  },
+  deepseek: {
+    name: "DeepSeek",
+    urls: ["https://deepseek.com/", "https://chat.deepseek.com/"],
+    messageType: "FILL_DEEPSEEK_PROMPT"
   }
 }
 
