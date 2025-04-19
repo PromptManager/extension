@@ -21,9 +21,23 @@ const mockPromptListData: Prompt[] = [
   }
 ];
 
+// Mock props for PromptList component
+const mockProps = {
+  categories: ["All", "General"],
+  selectedCategory: "All",
+  setSelectedCategory: jest.fn(),
+  currentCategory: "General",
+  setCurrentCategory: jest.fn(),
+  showCategoryInput: false,
+  setShowCategoryInput: jest.fn(),
+  newCategory: "",
+  setNewCategory: jest.fn(),
+  createNewCategory: jest.fn()
+};
+
 describe("PromptList", () => {
   it("should render a list of prompts", () => {
-    render(<PromptList prompts={mockPromptListData} />)
+    render(<PromptList prompts={mockPromptListData} {...mockProps} />)
 
     expect(screen.getByText("Sample Prompt")).toBeTruthy()
     expect(screen.getByText("Another Prompt")).toBeTruthy()
@@ -34,12 +48,12 @@ describe("PromptList", () => {
   })
 
   it("should render nothing if the prompt list is empty", () => {
-    render(<PromptList prompts={[]} />);
+    render(<PromptList prompts={[]} {...mockProps} />);
     expect(screen.queryByText("Sample Prompt")).toBeFalsy();
   });
 
   it("should filter prompts based on the search query", () => {
-    render(<PromptList prompts={mockPromptListData} />);
+    render(<PromptList prompts={mockPromptListData} {...mockProps} />);
 
     const searchInput = screen.getByPlaceholderText("Search Saved Prompt");
     fireEvent.change(searchInput, { target: { value: "Searchable" } });
@@ -50,7 +64,7 @@ describe("PromptList", () => {
   });
 
   it("should be case-insensitive when filtering prompts", () => {
-    render(<PromptList prompts={mockPromptListData} />);
+    render(<PromptList prompts={mockPromptListData} {...mockProps} />);
 
     const searchInput = screen.getByPlaceholderText("Search Saved Prompt");
     fireEvent.change(searchInput, { target: { value: "search tag" } });
@@ -61,7 +75,7 @@ describe("PromptList", () => {
   });
 
   it("should show all prompts when the search query is cleared", () => {
-    render(<PromptList prompts={mockPromptListData} />);
+    render(<PromptList prompts={mockPromptListData} {...mockProps} />);
 
     const searchInput = screen.getByPlaceholderText("Search Saved Prompt");
     fireEvent.change(searchInput, { target: { value: "Searchable" } });
