@@ -19,10 +19,11 @@ const config = {
   transform: {
     "^.+\\.(ts|tsx|js|jsx)$": ["ts-jest", {
       useESM: true,
+      isolatedModules: true
     }],
   },
   transformIgnorePatterns: [
-    "node_modules/(?!(.*\\.mjs$))"
+    "node_modules/(?!(@plasmohq|pify)/)"
   ],
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node", "mjs"],
   // Add this to tell Jest to mock this module
