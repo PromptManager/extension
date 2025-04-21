@@ -15,7 +15,7 @@ describe("PromptListItem", () => {
 
     expect(screen.getByText("Test Prompt")).toBeTruthy();
     expect(screen.getByText("This is a test prompt description.")).toBeTruthy();
-    expect(screen.getByText("Tag1, Tag2")).toBeTruthy();
+    expect(screen.getByText("Tags: Tag1, Tag2")).toBeTruthy();
   });
 
   it("should render correctly with empty tags", () => {
