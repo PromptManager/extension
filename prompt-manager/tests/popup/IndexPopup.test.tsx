@@ -3,7 +3,6 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import IndexPopup from "~popup";
 import { usePrompts } from "~hooks/usePrompts";
 
-// Mock the usePrompts hook
 jest.mock("~hooks/usePrompts");
 
 describe("IndexPopup - Saving and Searching Prompts", () => {
@@ -11,7 +10,6 @@ describe("IndexPopup - Saving and Searching Prompts", () => {
   
   beforeEach(() => {
     jest.clearAllMocks();
-    // Setup the mock implementation
     (usePrompts as jest.Mock).mockReturnValue({
       prompts: [],
       setPrompts: mockSetPrompts
@@ -22,26 +20,21 @@ describe("IndexPopup - Saving and Searching Prompts", () => {
     it("should add a new prompt when save button is clicked", () => {
       render(<IndexPopup />);
 
-      // Fill the input field
       const promptInput = screen.getByPlaceholderText("Enter Prompt");
       fireEvent.change(promptInput, { target: { value: "New Test Prompt" } });
 
-      // Click the save button
       const saveButton = screen.getByText("Save Prompt");
       fireEvent.click(saveButton);
 
-      // Check if setPrompts was called
       expect(mockSetPrompts).toHaveBeenCalled();
     });
 
     it("should not add a prompt if the input is empty", () => {
       render(<IndexPopup />);
 
-      // Click the save button without entering text
       const saveButton = screen.getByText("Save Prompt");
       fireEvent.click(saveButton);
 
-      // Check that setPrompts was not called
       expect(mockSetPrompts).not.toHaveBeenCalled();
     });
   });
@@ -58,7 +51,6 @@ describe("IndexPopup - Saving and Searching Prompts", () => {
 
       render(<IndexPopup />);
 
-      // Verify the search input exists
       const searchInput = screen.getByPlaceholderText("Search Saved Prompt");
       expect(searchInput).toBeTruthy();
     });
