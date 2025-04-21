@@ -3,7 +3,9 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import IndexPopup from "~popup";
 import { usePrompts } from "~hooks/usePrompts";
 
-jest.mock("~hooks/usePrompts");
+jest.mock("~hooks/usePrompts", () => ({
+  usePrompts: jest.fn()
+}));
 
 describe("IndexPopup - Saving and Searching Prompts", () => {
   const mockSetPrompts = jest.fn();
