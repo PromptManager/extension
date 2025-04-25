@@ -17,8 +17,17 @@ const config = {
   }),
   testEnvironment: "jsdom",
   transform: {
-    "^.+.tsx?$": ["ts-jest", {}],
+    "^.+\\.(ts|tsx|js|jsx)$": ["ts-jest", {
+      useESM: true,
+      isolatedModules: true
+    }],
   },
+  transformIgnorePatterns: [
+    "node_modules/(?!(@plasmohq|pify)/)"
+  ],
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node", "mjs"],
+  // Add this to tell Jest to mock this module
+  moduleDirectories: ["node_modules", "<rootDir>"]
 }
 
 export default config

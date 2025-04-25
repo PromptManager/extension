@@ -12,6 +12,10 @@
     {
       "name": "Ife Adeyefa",
       "email": "iadeyefa@ufl.edu"
+    },
+    {
+      "name": "Robert Barens",
+      "email": "rjbarnes@ufl.edu"
     }
   ],
   "scripts": {
@@ -45,7 +49,10 @@
   },
   "manifest": {
     "host_permissions": [
-      "https://*/*"
+      "https://chatgpt.com/*",
+      "https://chat.chatgpt.com/*",
+      "https://deepseek.com/*",
+      "https://chat.deepseek.com/*"
     ],
     "permissions": [
       "storage",
